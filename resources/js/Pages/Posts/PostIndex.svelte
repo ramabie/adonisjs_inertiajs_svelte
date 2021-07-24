@@ -1,41 +1,23 @@
 <script>
-  import Pagination from "../Shared/Pagination.svelte";
+
+  // i want to use pagination like https://mauricius.dev/effective-pagination-in-adonisjs/
+  //  but not reached
 
   export let posts
 </script>
 
-<Pagination links={posts} />
-
-<table class="table">
-  <tr>
-    <th>ID</th>
-    <th>Title</th>
-    <th>Content</th>
-    <th>Slug</th>
-  </tr>
+<br><br>
+<div class="box">
   {#each posts.data as post, i (post.id)}
-    <tr>
-      <td>{i+1}</td>
-      <td>{post.title}</td>
-      <td>{post.content}</td>
-      <td>{post.slug}</td>
-    </tr>
+      <h3>{post.title}</h3>
+      <small><i>{post.slug}</i></small>
+      <p>{post.content}</p>
   {/each}
-</table>
-
-
+</div>
 
 <style>
-  .table {
+  .box {
     margin: auto;
     width: 80%;
-    font-family: sans-serif;
-    color: #232323;
-    border-collapse: collapse;
-}
-
-.table, th, td {
-    border: 1px solid #999;
-    padding: 8px 20px;
-}
+  }
 </style>
