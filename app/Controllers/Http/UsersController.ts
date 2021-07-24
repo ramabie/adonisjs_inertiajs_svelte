@@ -2,13 +2,26 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
 export default class UsersController {
-  public async index({ inertia }: HttpContextContract) {
-    const users = await User.all()
+  public async index({ inertia, request }: HttpContextContract) {
+    //
 
-    return inertia.render('Users/IndexPage', { users })
+    const page = request.input('page', 1)
+    const limit = 10
+
+    const users = await User.query()
+      .select('id', 'first_name', 'last_name', 'email')
+      .paginate(page, limit)
+
+    // Changes the baseURL for the pagination links
+    users.baseUrl('/users')
+
+    return inertia.render('Users/UserIndex', { users })
   }
 
-  public async create({}: HttpContextContract) {}
+  public async create({ inertia }: HttpContextContract) {
+    //
+    return inertia.render('Users/UserCreate')
+  }
 
   public async store({}: HttpContextContract) {}
 

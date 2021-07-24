@@ -1,5 +1,6 @@
 const { join } = require('path')
 const Encore = require('@symfony/webpack-encore')
+const sveltePreprocess = require('svelte-preprocess')
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,20 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 |
 */
 Encore.setOutputPath('./public/assets')
+
+/*
+|--------------------------------------------------------------------------
+| Svelte Loader Config
+|--------------------------------------------------------------------------
+*/
+Encore.addLoader({
+  test: /\.svelte$/,
+  loader: 'svelte-loader',
+  options: {
+    emitCss: true,
+    preprocess: sveltePreprocess({}),
+  },
+})
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +60,8 @@ Encore.setPublicPath('/assets')
 | entrypoints.
 |
 */
-Encore.addEntry('app', './resources/js/app.js')
+Encore.addEntry('app', './resources/js/app.ts')
+Encore.enableTypeScriptLoader()
 
 /*
 |--------------------------------------------------------------------------
@@ -211,10 +227,22 @@ config.stats = 'errors-warnings'
 
 /*
 |--------------------------------------------------------------------------
+| Svelte Webpack Config
+|--------------------------------------------------------------------------
+*/
+config.resolve.mainFields = ['svelte', 'browser', 'module', 'main']
+config.resolve.extensions = ['.mjs', '.js', '.svelte']
+
+let svelte = config.module.rules.pop()
+config.module.rules.unshift(svelte)
+
+/*
+|--------------------------------------------------------------------------
 | Export config
 |--------------------------------------------------------------------------
 |
 | Export config for webpack to do its job
 |
 */
+
 module.exports = config

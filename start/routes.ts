@@ -24,4 +24,21 @@ import Route from '@ioc:Adonis/Core/Route'
 //   return view.render('welcome')
 // })
 
-Route.inertia('/', 'UsersController.index')
+// Route.get('/', 'UsersController.index')
+
+// Route.resource('users', 'UsersController')
+
+// Route.get('/', async ({ inertia }) => {
+//   return inertia.render('Test')
+// })
+
+Route.get('/', async ({ inertia }) => {
+  return inertia.render('IndexPage', { nama: 'IndexPage' })
+})
+
+Route.get('/users', 'UsersController.index').as('users.index')
+Route.get('/users/create', 'UsersController.create').as('users.create')
+
+Route.get('/posts', 'PostsController.index').as('posts.index')
+
+Route.inertia('about', 'About')
